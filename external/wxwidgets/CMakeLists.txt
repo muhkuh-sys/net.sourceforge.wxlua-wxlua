@@ -7,7 +7,7 @@ INCLUDE(ExternalProject)
 # Python is needed for the patch tool.
 FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 
-SET(VERSION_EXTERNAL "3.1.0")
+SET(VERSION_EXTERNAL "3.1.1")
 
 
 IF(${CMAKE_CROSSCOMPILING})
@@ -26,27 +26,37 @@ ELSE(${CMAKE_CROSSCOMPILING})
 	SET(CONFIGURE_HOST "")
 ENDIF(${CMAKE_CROSSCOMPILING})
 
+# Select the native toolkit.
+IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+	SET(NATIVE_TOOLKIT "--with-msw")
+ELSE(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+	SET(NATIVE_TOOLKIT "--with-gtk=3")
+ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
-SET(LIBLIST "")
-SET(INCLIST "")
-SET(LDLIST "")
+SET(EXT_CFLAGS "")
+SET(EXT_CXXFLAGS "")
+SET(EXT_LDFLAGS "")
 
 # Use static versions of libgcc and libstdc++ on windows.
 IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
-	LIST(APPEND LDLIST  "-static-libgcc -static-libstdc++")
+	LIST(APPEND EXT_LDFLAGS  "-static-libgcc -static-libstdc++")
 ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
-STRING(REPLACE ";" " " P_LINK_LIBRARIES "${LIBLIST}")
-STRING(REPLACE ";" " " P_INCLIST "${INCLIST}")
-STRING(REPLACE ";" " " P_LDLIST "${LDLIST}")
+# The static libraries will be linked to a shared object later. This needs "-fPIC" on linux.
+IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"  AND  "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+	LIST(APPEND EXT_CFLAGS "-fPIC")
+	LIST(APPEND EXT_CXXFLAGS "-fPIC")
+ENDIF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"  AND  "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+
+STRING(REPLACE ";" " " P_CFLAGS "${EXT_CFLAGS}")
+STRING(REPLACE ";" " " P_CXXFLAGS "${EXT_CXXFLAGS}")
+STRING(REPLACE ";" " " P_LDFLAGS "${EXT_LDFLAGS}")
 
 ExternalProject_Add(TARGET_wxwidgets
                     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/wxwidgets
-                    URL ${CMAKE_CURRENT_SOURCE_DIR}/wxWidgets-${VERSION_EXTERNAL}.tar.bz2
-                    URL_HASH SHA1=2170839cfa9d9322e8ee8368b21a15a2497b4f11
-                    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env "CPPFLAGS=${P_INCLIST}" "LDFLAGS=${P_LDLIST}" "LIBS=${P_LINK_LIBRARIES}" ${CMAKE_CURRENT_BINARY_DIR}/wxwidgets/src/TARGET_wxwidgets/configure --prefix=${CMAKE_CURRENT_BINARY_DIR}/install --disable-shared --disable-precomp-headers --with-gtk=3 --enable-compat28 ${CONFIGURE_HOST}
+                    URL ${CMAKE_CURRENT_SOURCE_DIR}/wxWidgets-gitc93b88a.tar.xz
+                    URL_HASH SHA1=d9f82eccd61661f04dac167408cf0073ab2b7818
+                    CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env "CFLAGS=${P_CFLAGS}" "CXXFLAGS=${P_CXXFLAGS}" "LDFLAGS=${P_LDFLAGS}" ${CMAKE_CURRENT_BINARY_DIR}/wxwidgets/src/TARGET_wxwidgets/configure --prefix=${CMAKE_CURRENT_BINARY_DIR}/install --disable-shared --disable-precomp-headers ${NATIVE_TOOLKIT} ${CONFIGURE_HOST}
                     BUILD_COMMAND make
                     INSTALL_COMMAND make install
-                    USES_TERMINAL_CONFIGURE 1
-                    USES_TERMINAL_BUILD 1
 )

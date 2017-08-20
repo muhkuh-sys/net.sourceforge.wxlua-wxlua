@@ -1,0 +1,12 @@
+diff -uNr wxlua/wxLua/CMakeLists.txt wxlua_patched/wxLua/CMakeLists.txt
+--- wxlua/wxLua/CMakeLists.txt	2017-08-15 13:16:50.000000000 +0200
++++ wxlua_patched/wxLua/CMakeLists.txt	2017-08-19 14:22:47.400502986 +0200
+@@ -46,7 +46,7 @@
+ # Specify what wxWidgets libs we need to link to. Note: 'core' must be before 'base'.
+ # If this CMakeLists.txt was called from another, FIND_WXWIDGETS() may have already been called.
+ if (NOT DEFINED wxWidgets_COMPONENTS)
+-    set(wxWidgets_COMPONENTS webview gl xrc xml net media propgrid richtext aui stc html adv core base)  # complete set for static lib/dll
++    set(wxWidgets_COMPONENTS xrc xml net propgrid richtext aui stc html adv core base)  # complete set for static lib/dll
+     #set(wxWidgets_COMPONENTS webview gl xrc xml net media propgrid richtext aui stc html adv core base) # for multilib/dll
+     #set(wxWidgets_COMPONENTS stc mono) # for monolithic
+ endif()

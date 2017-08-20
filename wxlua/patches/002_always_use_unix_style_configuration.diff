@@ -1,0 +1,23 @@
+diff -uNr wxlua/wxLua/build/FindwxWidgets.cmake wxlua_patched/wxLua/build/FindwxWidgets.cmake
+--- wxlua/wxLua/build/FindwxWidgets.cmake	2017-08-15 13:16:50.000000000 +0200
++++ wxlua_patched/wxLua/build/FindwxWidgets.cmake	2017-08-20 14:30:30.464670842 +0200
+@@ -203,13 +203,13 @@
+ 
+ #=====================================================================
+ #=====================================================================
+-if(WIN32 AND NOT CYGWIN AND NOT MSYS)
+-  set(wxWidgets_FIND_STYLE "win32")
+-else()
+-  if(UNIX OR MSYS)
++#if(WIN32 AND NOT CYGWIN AND NOT MSYS)
++#  set(wxWidgets_FIND_STYLE "win32")
++#else()
++#  if(UNIX OR MSYS)
+     set(wxWidgets_FIND_STYLE "unix")
+-  endif()
+-endif()
++#  endif()
++#endif()
+ 
+ #=====================================================================
+ # WIN32_FIND_STYLE
