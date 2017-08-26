@@ -60,3 +60,9 @@ ExternalProject_Add(TARGET_wxwidgets
                     BUILD_COMMAND make
                     INSTALL_COMMAND make install
 )
+
+ExternalProject_Add_Step(TARGET_wxwidgets wxwidgets_copy_libs
+                         COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_CURRENT_SOURCE_DIR}/copy_libs.py ${CMAKE_CURRENT_BINARY_DIR}/install
+                         COMMENT "Copy wxWidgets library."
+                         DEPENDEES install
+                         ALWAYS 1)
