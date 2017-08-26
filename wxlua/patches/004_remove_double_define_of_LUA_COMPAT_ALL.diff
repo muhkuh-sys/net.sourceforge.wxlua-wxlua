@@ -1,0 +1,16 @@
+diff -uNr wxlua/wxLua/CMakeLists.txt wxlua_patched/wxLua/CMakeLists.txt
+--- wxlua/wxLua/CMakeLists.txt	2017-08-16 17:50:18.000000000 +0200
++++ wxlua_patched/wxLua/CMakeLists.txt	2017-08-26 15:19:20.402250982 +0200
+@@ -169,9 +169,9 @@
+     set(wxLua_LUA_LIBRARY )
+ endif()
+ 
+-if (${wxLua_LUA_LIBRARY_VERSION} VERSION_EQUAL 5.2)
+-    set(wxLua_CXX_DEFINITIONS ${wxLua_CXX_DEFINITIONS} -DLUA_COMPAT_ALL) # Match build used in default 5.2 Makefile
+-endif()
++#if (${wxLua_LUA_LIBRARY_VERSION} VERSION_EQUAL 5.2)
++#    set(wxLua_CXX_DEFINITIONS ${wxLua_CXX_DEFINITIONS} -DLUA_COMPAT_ALL) # Match build used in default 5.2 Makefile
++#endif()
+ 
+ set(wxLua_CXX_DEFINITIONS "${wxLua_CXX_DEFINITIONS}" CACHE INTERNAL
+     "wxLua C++ compiler flags to include/exclude wxLua binding libs" FORCE)
