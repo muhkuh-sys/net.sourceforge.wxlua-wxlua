@@ -1,0 +1,30 @@
+diff -uNr wxlua/wxLua/modules/wxbind/src/wxnet_bind.cpp wxlua_patched/wxLua/modules/wxbind/src/wxnet_bind.cpp
+--- wxlua/wxLua/modules/wxbind/src/wxnet_bind.cpp	2017-08-16 17:50:18.000000000 +0200
++++ wxlua_patched/wxLua/modules/wxbind/src/wxnet_bind.cpp	2017-08-27 13:01:31.441276450 +0200
+@@ -100,7 +100,7 @@
+     // get this
+     wxSocketBase * self = (wxSocketBase *)wxluaT_getuserdatatype(L, 1, wxluatype_wxSocketBase);
+     // call GetClientData
+-    long  returns = (long )self->GetClientData();
++    ptrdiff_t returns = (ptrdiff_t)self->GetClientData();
+     // push the result number
+     lua_pushnumber(L, returns);
+ 
+@@ -398,7 +398,7 @@
+ static int LUACALL wxLua_wxSocketBase_SetClientData(lua_State *L)
+ {
+     // voidptr_long number
+-    long number = (long)wxlua_getnumbertype(L, 2);
++    ptrdiff_t number = (ptrdiff_t)wxlua_getnumbertype(L, 2);
+     // get this
+     wxSocketBase * self = (wxSocketBase *)wxluaT_getuserdatatype(L, 1, wxluatype_wxSocketBase);
+     // call SetClientData
+@@ -920,7 +920,7 @@
+     // get this
+     wxSocketEvent * self = (wxSocketEvent *)wxluaT_getuserdatatype(L, 1, wxluatype_wxSocketEvent);
+     // call GetClientData
+-    long  returns = (long )self->GetClientData();
++    ptrdiff_t returns = (ptrdiff_t)self->GetClientData();
+     // push the result number
+     lua_pushnumber(L, returns);
+ 

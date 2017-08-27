@@ -1,7 +1,7 @@
-diff -uNr wxlua/wxLua/modules/wxbind/src/wxcore_bind.cpp wxlua_patched/wxLua/modules/wxbind/src/wxcore_bind.cpp
+diff -uNr wxlua/wxLua/modules/wxbind/src/wxcore_bind.cpp wxlua_patch/wxLua/modules/wxbind/src/wxcore_bind.cpp
 --- wxlua/wxLua/modules/wxbind/src/wxcore_bind.cpp	2017-08-16 17:50:18.000000000 +0200
-+++ wxlua_patched/wxLua/modules/wxbind/src/wxcore_bind.cpp	2017-08-20 19:59:33.588994551 +0200
-@@ -63,20 +63,6 @@
++++ wxlua_patch/wxLua/modules/wxbind/src/wxcore_bind.cpp	2017-08-27 12:26:30.993726631 +0200
+@@ -63,19 +63,19 @@
  wxCursor* wxLua_wxHOURGLASS_CURSOR = NULL;
  wxCursor* wxLua_wxCROSS_CURSOR = NULL;
  
@@ -18,11 +18,23 @@ diff -uNr wxlua/wxLua/modules/wxbind/src/wxcore_bind.cpp wxlua_patched/wxLua/mod
 -    #define wxEVT_COMMAND_DIRPICKER_CHANGED  wxLua_wxEVT_COMMAND_DIRPICKER_CHANGED
 -    #define wxEVT_COMMAND_FILEPICKER_CHANGED wxLua_wxEVT_COMMAND_FILEPICKER_CHANGED
 -#endif //__MINGW32__
--
++// #if defined(__MINGW32__) || defined(__GNUWIN32__)
++//     // FIX: "internal compiler error: output_operand: invalid expression as operand"
++//     // We set their value again later since some compilers (gcc) won't set their value yet
++//     static wxPoint wxLua_wxDefaultPosition = wxDefaultPosition;
++//     static wxSize wxLua_wxDefaultSize      = wxDefaultSize;
++//     static wxEventType wxLua_wxEVT_COMMAND_DIRPICKER_CHANGED  = wxEVT_COMMAND_DIRPICKER_CHANGED;
++//     static wxEventType wxLua_wxEVT_COMMAND_FILEPICKER_CHANGED = wxEVT_COMMAND_FILEPICKER_CHANGED;
++// 
++//     #define wxDefaultPosition wxLua_wxDefaultPosition
++//     #define wxDefaultSize     wxLua_wxDefaultSize
++//     #define wxEVT_COMMAND_DIRPICKER_CHANGED  wxLua_wxEVT_COMMAND_DIRPICKER_CHANGED
++//     #define wxEVT_COMMAND_FILEPICKER_CHANGED wxLua_wxEVT_COMMAND_FILEPICKER_CHANGED
++// #endif //__MINGW32__
+ 
  
  // ---------------------------------------------------------------------------
- // wxLuaGetEventList_wxcore() is called to register events
-@@ -7825,17 +7811,6 @@
+@@ -7825,16 +7825,16 @@
  
  bool wxLuaBinding_wxcore::RegisterBinding(const wxLuaState& wxlState)
  {
@@ -36,7 +48,16 @@ diff -uNr wxlua/wxLua/modules/wxbind/src/wxcore_bind.cpp wxlua_patched/wxLua/mod
 -    wxLua_wxEVT_COMMAND_DIRPICKER_CHANGED  = wxEVT_COMMAND_DIRPICKER_CHANGED;
 -    wxLua_wxEVT_COMMAND_FILEPICKER_CHANGED = wxEVT_COMMAND_FILEPICKER_CHANGED;
 -#endif //__MINGW32__
--
++// #if defined(__MINGW32__) || defined(__GNUWIN32__)
++//     #undef wxDefaultPosition
++//     #undef wxDefaultSize
++//     #undef wxEVT_COMMAND_DIRPICKER_CHANGED
++//     #undef wxEVT_COMMAND_FILEPICKER_CHANGED
++//     wxLua_wxDefaultPosition = wxDefaultPosition;
++//     wxLua_wxDefaultSize     = wxDefaultSize;
++//     wxLua_wxEVT_COMMAND_DIRPICKER_CHANGED  = wxEVT_COMMAND_DIRPICKER_CHANGED;
++//     wxLua_wxEVT_COMMAND_FILEPICKER_CHANGED = wxEVT_COMMAND_FILEPICKER_CHANGED;
++// #endif //__MINGW32__
+ 
      // ugly hack for wxWidgets >2.7 change to use wxStockGDI::GetXXX
      if (wxLua_wxBLACK == NULL)
-     {

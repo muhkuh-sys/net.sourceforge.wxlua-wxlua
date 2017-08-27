@@ -1,0 +1,44 @@
+diff -uNr wxlua/wxLua/modules/wxlua/debug/wxlstack.cpp wxlua_patched/wxLua/modules/wxlua/debug/wxlstack.cpp
+--- wxlua/wxLua/modules/wxlua/debug/wxlstack.cpp	2017-08-16 17:50:18.000000000 +0200
++++ wxlua_patched/wxLua/modules/wxlua/debug/wxlstack.cpp	2017-08-27 13:40:50.373833345 +0200
+@@ -1090,7 +1090,7 @@
+ 
+             long long_key = 0;
+             if (debugItem->GetRefPtr(long_key))
+-                m_expandedItems[long_key] = (long)stkListData;
++                m_expandedItems[long_key] = stkListData;
+ 
+             FillTableEntry(lc_item, stkListData->m_childrenDebugData);
+ 
+@@ -1110,7 +1110,7 @@
+                                            wxT("wxLua Stack"), wxOK | wxCANCEL | wxCENTRE, this);
+                     if (ret == wxOK)
+                     {
+-                        int n = m_listData.Index((void*)m_expandedItems[long_key]);
++                        int n = m_listData.Index(m_expandedItems[long_key]);
+                         wxCHECK_MSG(n != wxNOT_FOUND, false, wxT("Unable to find hash of expanded items."));
+ 
+                         m_listCtrl->SetItemState(n, wxLIST_STATE_FOCUSED,  wxLIST_STATE_FOCUSED);
+@@ -1123,7 +1123,7 @@
+             {
+                 debugItem->SetFlagBit(WXLUA_DEBUGITEM_EXPANDED, true);
+ 
+-                m_expandedItems[long_key] = (long)stkListData;
++                m_expandedItems[long_key] = stkListData;
+ 
+                 EnumerateTable(debugItem->GetRef(), debugItem->GetIndex() + 1, lc_item);
+                 expanded = true;
+diff -uNr wxlua/wxLua/modules/wxlua/debug/wxlstack.h wxlua_patched/wxLua/modules/wxlua/debug/wxlstack.h
+--- wxlua/wxLua/modules/wxlua/debug/wxlstack.h	2017-08-16 17:50:18.000000000 +0200
++++ wxlua_patched/wxLua/modules/wxlua/debug/wxlstack.h	2017-08-27 13:39:00.046169867 +0200
+@@ -245,7 +245,9 @@
+     bool m_show_dup_expand_msg;
+     int  m_batch_count;
+ 
+-    wxLongToLongHashMap m_expandedItems; // map[long Lua table ptr] = &wxLuaStackListData
++//    wxLongToLongHashMap m_expandedItems; // map[long Lua table ptr] = &wxLuaStackListData
++    WX_DECLARE_HASH_MAP(long, wxLuaStackListData*, wxIntegerHash, wxIntegerEqual, wxLongToStackListDataHashMap);
++    wxLongToStackListDataHashMap m_expandedItems;
+ 
+     wxArrayPtrVoid m_listData;    // array of wxLuaStackListData
+ 

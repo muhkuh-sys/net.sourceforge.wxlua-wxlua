@@ -1,0 +1,21 @@
+diff -uNr wxlua/wxLua/modules/wxbind/src/wxcore_event.cpp wxlua_patched/wxLua/modules/wxbind/src/wxcore_event.cpp
+--- wxlua/wxLua/modules/wxbind/src/wxcore_event.cpp	2017-08-16 17:50:18.000000000 +0200
++++ wxlua_patched/wxLua/modules/wxbind/src/wxcore_event.cpp	2017-08-27 12:56:17.132291256 +0200
+@@ -136,7 +136,7 @@
+     // get this
+     wxCommandEvent * self = (wxCommandEvent *)wxluaT_getuserdatatype(L, 1, wxluatype_wxCommandEvent);
+     // call GetClientData
+-    long  returns = (long )self->GetClientData();
++    ptrdiff_t returns = (ptrdiff_t)self->GetClientData();
+     // push the result number
+     lua_pushnumber(L, returns);
+ 
+@@ -278,7 +278,7 @@
+ static int LUACALL wxLua_wxCommandEvent_SetClientData(lua_State *L)
+ {
+     // voidptr_long number
+-    long number = (long)wxlua_getnumbertype(L, 2);
++    ptrdiff_t number = (ptrdiff_t)wxlua_getnumbertype(L, 2);
+     // get this
+     wxCommandEvent * self = (wxCommandEvent *)wxluaT_getuserdatatype(L, 1, wxluatype_wxCommandEvent);
+     // call SetClientData
