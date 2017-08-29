@@ -94,7 +94,7 @@ python2.7 ../../cmake/tools/generate_hash.py targets/jonchki/repository/net/sour
 python2.7 ../../cmake/tools/generate_hash.py targets/jonchki/repository/net/sourceforge/wxlua/wxlua/*/lua5.2-wxlua-*.tar.xz
 popd
 
-pushd build/net.sourceforge.wxlua-lua5.1-wxlua
+pushd build/net.sourceforge.wxlua-lua5.3-wxlua
 cmake -DCMAKE_INSTALL_PREFIX="" ../../wxlua/installer/lua5.3
 make
 make package
